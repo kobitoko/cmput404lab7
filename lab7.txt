@@ -1,0 +1,106 @@
+Lab today is about REST
+Representational State Transfer.
+
+Flask is stripped down in features compared to DJango
+e.g. no build in DB, and templates etc.
+
+But flask is very handy if you don't need all that stuff.
+
+
+URL represents an object, HTTP command  is the verb
+
+CRUD, These get mapped to http commands: 
+    Create - Post,  
+        success status: 201 Created
+        failure: when e.g. resource already exists: 409 Conflict
+            or maybe if it is too big, 413 Payload Too Large etc.
+    Read - Get,  
+        success status: 200 Ok
+        failure: if you try get something that is not there, 404, 
+            but 410 only if it used to be around, 
+            if we dont know it used to exist we then use 404.
+    Update - Put,  
+        success status: depends, if you send something back 200 OK / modify without sending anything back 204 No Content
+        failure: if it doesnt exist 404
+            or if you have a stale object, someone else updated it already, 409 Conflict
+    Delete - Delete,  
+        success status: 202 Accepted, 204 No Content
+        failure: 404
+    
+Http was not exactly designed to do this but it works because the http standard.
+
+HTTP command Patch is an extreme case where you can edit one field.
+    e.g. change part of name.
+
+XSS (X:Cross S:Site S:Scripting)
+    XSS attack is a cross site scripting (an embedded javascript) to attack another server.
+    Javascript was given the ability to make HTTP requests in the browser.
+    Using cookies you can impersonate someone etc.
+    How a website is Vulnerable? By enabling userinput's html tags to be run, more specifically, not filtering the <script> tag.
+    
+    One way to solve this is using the "Same-Origin Policy" (This website cannot use JS to make requests to other servers)
+    JS is now limited to one server only, might split up server that serves UI and DB, thus a problem.
+    Thus a new rule was added, CORS.
+    
+CORS (Cross Origin Resource Sharing)
+    Mechanism for some server, i want these websites to be able to make requests to me.
+    It puts the server that is being accessed in control, it asks if it allows other website to make requests.
+    Basically overcoming the Same-Origin Policy. It is implemented via an HTTP header.
+    Without CORS, JS is now limited to one server only, 
+    a developer might split up a server that serves UI and 
+    another DB for performance reasons, thus they would care about implementing CORS.
+
+More fun XSS attacks:
+    images have different  same-origin policy, can embed js inside e.g. the src. <img src="JS HERE PLZ"></img>
+
+Ways one website can refer to another website:
+    Img, Link, Frames (like iFrames), XMLHttpRequest, and forms:
+
+XCSRF (Cross site Request Forgeries) attack use forms (they have action="target..." which form gets send to 
+    another url? Forms are exempt from same-origin policy as they existed before JS),
+    To avoid this, whenever you make a form, you need an CSRF token so other websites cannot randomly send a form to website.
+    Using these CSRF, when a form is made before it sends the html, it makes a CSRF token, then sends the html with the csrf token.
+    If it gets form back, the CSRF token has to match the initial one when initially generated, otherwise its a form forgery.
+    
+-------------------------
+
+1 REST: Representational State Transfer, 
+    it allows webaccess to resources that normally go in a database;
+    which then makes it easy to work it with lots of different pieces of software.
+    Instead of connecting to a specific database and speak in their specific SQL variants, 
+    you can just use http to connect to them and http is a common standard thus is nice overall.
+
+2 CRUD: Create, Read, Update, Delete
+    CRUD, These get mapped to http commands: 
+    Create - Post,  success status: 201 Created
+    Read - Get,  success status: 200 Ok
+    Update - Put,  success status: depends, if you send something back 200 OK / modify without sending anything back 204 No Content
+    Delete - Delete,  success status: 202 Accepted, 204 No Content
+
+3 HTTP 1xx: Informational as request received and now continuing the process, 
+    HTTP 2xx generally successful, 
+    HTTP 3xx Redirection the client has to do extra things to complete the request,
+    HTTP 4xx the client's fault they did something wrong, 
+    HTTP 5xx the server's fault they failed to fullfill a seemingly valid request.
+    
+4 XSS (X:Cross S:Site S:Scripting)
+    XSS attack is a cross site scripting (an embedded javascript) to attack another server.
+    Javascript was given the ability to make HTTP requests in the browser.
+    Using cookies you can impersonate someone etc.
+    How a website is Vulnerable? By enabling userinput's html tags to be run, more specifically, not filtering the <script> tag.
+    
+    One way to solve this is using the "Same-Origin Policy" (This website cannot use JS to make requests to other servers)
+    JS is now limited to one server only, might split up server that serves UI and DB, thus a problem.
+    Thus a new rule was added, CORS.
+
+5  CORS (Cross Origin Resource Sharing)
+    Mechanism for some server, i want these websites to be able to make requests to me.
+    It puts the server that is being accessed in control, it asks if it allows other website to make requests.
+    Basically overcoming the Same-Origin Policy. It is implemented via an HTTP header.
+    Without CORS, JS is now limited to one server only, 
+    a developer might split up a server that serves UI and 
+    another DB for performance reasons, thus they would care about implementing CORS.
+
+
+
+
